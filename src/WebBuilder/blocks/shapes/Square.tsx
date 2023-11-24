@@ -201,14 +201,15 @@ export const Square = ({
     ]);
 
     const onResizeHandler = useCallback((e) => {
-        const {left: leftDistanceFromLeftEdge} = e;
-
+        // const {left: leftDistanceFromLeftEdge} = e;
+        const leftDistanceFromLeftEdge = targetRef.current?.getBoundingClientRect().left ?? 0
         const rightDistanceFromRightEdge = document.documentElement.clientWidth - (targetRef.current?.getBoundingClientRect().right ?? 0);
 
         isIntoEdgeZone = leftDistanceFromLeftEdge < restEdgePartWidth || rightDistanceFromRightEdge < restEdgePartWidth;
-
+        console.log(leftDistanceFromLeftEdge, '__leftDistanceFromLeftEdge__444444', rightDistanceFromRightEdge);
         const widthDistance = columnGap + cellWidth;
         const widthDiff = e.offsetWidth - outlineWidth;
+        console.log(isIntoEdgeZone, '__isIntoEdgeZone__');
         const halfWidthDistance = isIntoEdgeZone ? restEdgePartWidth / 2 : widthDistance / 2;
 
         const heightDistance = rowGap + gridCellHeight;
