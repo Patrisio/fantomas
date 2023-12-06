@@ -1,64 +1,6 @@
-import {useMemo, useCallback, useState, useEffect, useLayoutEffect, useRef} from 'react';
+import {useMemo, useState, useEffect} from 'react';
 import Context from './context';
-import {Grid} from './classes/Grid';
 import { GRID_CELL_HEIGHT, GRID_CELL_BORDER, MAX_WIDTH } from './components/Grid/constants';
-
-const useStateWithCallback = (initialState, callback?: VoidFunction) => {
-    const [state, setState] = useState(initialState);
-  
-    const didMount = useRef(false);
-  
-    useEffect(() => {
-      if (didMount.current) {
-        callback?.(state);
-      } else {
-        didMount.current = true;
-      }
-    }, [state, callback]);
-  
-    return [state, setState];
-};
-  
-const useStateWithCallbackInstant = (initialState, callback?: VoidFunction) => {
-    const [state, setState] = useState(initialState);
-  
-    const didMount = useRef(false);
-  
-    useLayoutEffect(() => {
-      if (didMount.current) {
-        callback?.(state);
-      } else {
-        didMount.current = true;
-      }
-    }, [state, callback]);
-  
-    return [state, setState];
-};
-
-const useStateWithCallbackLazy = (initialValue) => {
-    const callbackRef = useRef(null);
-  
-    const [value, setValue] = useState(initialValue);
-  
-    useEffect(() => {
-      if (callbackRef.current) {
-        callbackRef.current(value);
-  
-        callbackRef.current = null;
-      }
-    }, [value]);
-  
-    const setValueWithCallback = useCallback(
-      (newValue, callback) => {
-        callbackRef.current = callback;
-  
-        return setValue(newValue);
-      },
-      [],
-    );
-  
-    return [value, setValueWithCallback];
-  };
 
 function GridProvider({children}) {
     const [rows, setRows] = useState(10);
@@ -81,6 +23,9 @@ function GridProvider({children}) {
         return gridWidth;
     }, [cellWidth, columns, columnGap]);
 
+    const gridTotalCells = rows * columns;
+    const gridHeight = (rows * GRID_CELL_HEIGHT) + (rowGap * (rows - 1));
+
     useEffect(() => {
         const clientWidth = document.documentElement.clientWidth;
         const restEdgePartWidth = (clientWidth - gridWidth) / 2;
@@ -100,15 +45,16 @@ function GridProvider({children}) {
             setRowGap,
             setColumnGap,
             gridCellHeight: GRID_CELL_HEIGHT,
-            gridCellBorder: GRID_CELL_BORDER,
             cellWidth,
             maxRowsCount,
             setMaxRowsCount,
             gridWidth,
             restEdgePartWidth,
-            clientWidth
+            clientWidth,
+            gridTotalCells,
+            gridHeight,
         };
-    }, [cellWidth, columnGap, columns, rowGap, rows, setRows, maxRowsCount, setMaxRowsCount, gridWidth, restEdgePartWidth, clientWidth]);
+    }, [cellWidth, columnGap, columns, rowGap, rows, setRows, maxRowsCount, setMaxRowsCount, gridWidth, restEdgePartWidth, clientWidth, gridTotalCells, gridHeight]);
 
     return (<Context.Provider value={gridStore}>{children}</Context.Provider>);
 }

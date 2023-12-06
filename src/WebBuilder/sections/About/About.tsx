@@ -1,5 +1,5 @@
-import { Square } from "../../blocks";
-import { BaseSection } from "../BaseSection";
+import {Square} from "../../blocks";
+import {BaseSection} from "../BaseSection";
 import {usePositioner} from '../../../app/positioner';
 import {createPortal} from 'react-dom';
 

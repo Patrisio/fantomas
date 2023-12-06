@@ -7,7 +7,7 @@ import {elementId} from './constants';
 import {useMemo} from 'react';
 
 export const Debug = () => {
-    const {setColumns, setRows, setRowGap, setColumnGap, columnGap, cellWidth, gridCellHeight, gridCellBorder} = useGrid();
+    const {setColumns, setRows, setRowGap, setColumnGap, columnGap, cellWidth, gridCellHeight} = useGrid();
     const {
         state: positionerState,
         methods: positionerMethods,

@@ -20,4 +20,5 @@ export const Cell = styled.div`
     border: ${GRID_CELL_BORDER}px solid blue;
     height: ${GRID_CELL_HEIGHT}px;
     border-radius: 5px;
+    box-sizing: border-box;
 `;

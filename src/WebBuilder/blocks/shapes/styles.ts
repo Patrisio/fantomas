@@ -12,7 +12,7 @@ export const SquareContainer = styled.div<{
     columnEnd: number;
     lastColumnNumber: number;
 }>`
-    ${({width, outlineColumnStart, outlineColumnEnd, lastColumnNumber}) => `width: ${width}px`};
+    ${({width}) => `width: ${width}px`};
     ${({height}) => `height: ${height}px`};
     ${({rowStart}) => `grid-row-start: ${rowStart}`};
     ${({rowEnd}) => `grid-row-end: ${rowEnd}`};

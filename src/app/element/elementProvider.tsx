@@ -7,7 +7,7 @@ import {useGrid} from '../grid';
 const EDGE_COLUMNS_COUNT = 2;
 
 function ElementProvider({children}) {
-    const {columnGap, cellWidth, gridCellHeight, gridCellBorder, columns, restEdgePartWidth} = useGrid();
+    const {columnGap, cellWidth, gridCellHeight, columns, restEdgePartWidth} = useGrid();
     const [elements, setElements] = useState(new Map());
 
     const [elementConfig, setElementConfig] = useState<ElementConfig>({
@@ -48,10 +48,10 @@ function ElementProvider({children}) {
 
     const getElementHeight = useCallback((rowStart: number, rowEnd: number) => {
         const cellsCount = rowEnd - rowStart;
-        const totalGridCellHeight = gridCellHeight + 2 * gridCellBorder;
+        const totalGridCellHeight = gridCellHeight;
 
         return (cellsCount - 1) * columnGap + cellsCount * totalGridCellHeight;
-    }, [columnGap, gridCellHeight, gridCellBorder]);
+    }, [columnGap, gridCellHeight]);
 
     const addElementData = useCallback((id: string, elementData: ElementData) => {
         setElements(prevState => {
@@ -105,50 +105,18 @@ function ElementProvider({children}) {
         e.setMin([minWidth, minHeight]);
     }, [getElementConfigByShapeType]);
 
-    const updateElementBounds = useCallback((id: string, bounds) => {
-        setElements(prevState => {
-            const newState = new Map(prevState);
-
-            const foundElementData = newState.get(id);
-
-            if (!foundElementData) {
-                throw new Error('element не найден');
-            }
-            
-            foundElementData.bounds = bounds;
-
-            newState.set(id, foundElementData);
-
-            return newState;
-        });
-    }, []);
-
-    const getElementBounds = useCallback((id: string) => {
-        const foundElementData = elements.get(id);
-
-        if (!foundElementData) {
-            throw new Error('element не найден');
-        }
-
-        const elementBounds = foundElementData.bounds;
-
-        return elementBounds;
-    }, [elements]);
-
     const methods = useMemo(() => ({
         addElementData,
         updateElementWidth,
         updateElementHeight,
         setMinOffsetWidthAndHeight,
-        updateElementBounds,
-    }), [addElementData, updateElementWidth, updateElementHeight, setMinOffsetWidthAndHeight, updateElementBounds]);
+    }), [addElementData, updateElementWidth, updateElementHeight, setMinOffsetWidthAndHeight]);
 
     const queries = useMemo(() => ({
         getElementWidth,
         getElementHeight,
         getElementConfigByShapeType,
-        getElementBounds,
-    }), [getElementWidth, getElementHeight, getElementConfigByShapeType, getElementBounds]);
+    }), [getElementWidth, getElementHeight, getElementConfigByShapeType]);
 
     const elementStore = useMemo(() => ({
         state: elements,

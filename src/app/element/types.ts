@@ -18,14 +18,12 @@ type ElementMethods = {
     updateElementWidth: (id: string, width: number) => void;
     updateElementHeight: (id: string, height: number) => void;
     setMinOffsetWidthAndHeight: (e: any) => void;
-    updateElementBounds: (id: string, bounds: Bounds) => void;
 };
 
 type ElementQueries = {
     getElementWidth: (columnStart: number, columnEnd: number) => number;
     getElementHeight: (rowStart: number, rowEnd: number) => number;
     getElementConfigByShapeType: (elementType: ElementType) => {minWidth: number, minHeight: number};
-    getElementBounds:  (id: string) => Bounds;
 };
 
 export type ElementContext = {

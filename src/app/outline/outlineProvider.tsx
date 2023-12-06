@@ -75,7 +75,6 @@ function OutlineProvider({children}) {
         });
     }, []);
 
-
     const updateRowEnd = useCallback((id: string, rowEnd: number) => {
         setOutlineData(prevState => {
             const newState = new Map(prevState);
@@ -144,6 +143,22 @@ function OutlineProvider({children}) {
         });
     }, []);
 
+    const getOutlineGridArea = useCallback((elementId: string) => {
+        const outlineState = outlineData.get(elementId);
+
+        if (!outlineState) {
+            throw new Error(`Нет outline для elementId: ${elementId}`);
+        }
+
+        const {position: {
+            rowStart: outlineRowStart, rowEnd: outlineRowEnd, columnStart: outlineColumnStart, columnEnd: outlineColumnEnd
+        }} = outlineState;
+
+        const outlineGridArea = `${outlineRowStart} / ${outlineColumnStart} / ${outlineRowEnd} / ${outlineColumnEnd}`;
+
+        return outlineGridArea;
+    }, [outlineData]);
+
     const methods = useMemo(() => ({
         addOutlineById,
         updateColumnStart,
@@ -159,10 +174,17 @@ function OutlineProvider({children}) {
         showOutline, hideOutline,
     ]);
 
+    const queries = useMemo(() => {
+        return {
+            getOutlineGridArea,
+        }
+    }, [getOutlineGridArea]);
+
     const outlineStore = useMemo(() => ({
         state: outlineData,
         methods,
-    }), [outlineData, methods]);
+        queries,
+    }), [outlineData, methods, queries]);
 
     return (
         <Context.Provider value={outlineStore}>

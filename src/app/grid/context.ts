@@ -14,6 +14,5 @@ export default createContext<GridContext>({
     setRowGap: noop,
     setColumnGap: noop,
     gridCellHeight: GRID_CELL_HEIGHT,
-    gridCellBorder: GRID_CELL_BORDER,
     cellWidth: 0,
 });

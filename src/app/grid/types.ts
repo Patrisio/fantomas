@@ -10,8 +10,9 @@ export type GridContext = {
     setRowGap: Dispatch<SetStateAction<number>>;
     setColumnGap: Dispatch<SetStateAction<number>>;
     gridCellHeight: number;
-    gridCellBorder: number;
     cellWidth: number;
     maxRowsCount: number;
     setMaxRowsCount: Dispatch<SetStateAction<number>>;
+    gridTotalCells: number;
+    gridHeight: number;
 };

@@ -23,8 +23,12 @@ type OutlineMethods = {
     showOutline: (id: string) => void;
     hideOutline: (id: string) => void;
 };
+type OutlineQueries = {
+    getOutlineGridArea: (elementId: string) => string;
+};
 
 export type OutlineContext = {
     state: OutlineState;
     methods: OutlineMethods;
+    queries: OutlineQueries;
 };
