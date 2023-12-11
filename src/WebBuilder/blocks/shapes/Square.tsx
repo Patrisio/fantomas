@@ -1,15 +1,16 @@
 import {SquareContainer} from './styles';
 import {useRef, useMemo} from 'react';
-import {useGrid} from '../../../app/grid';
 import {BaseBlock} from '../baseBlock';
 
 import {useOutline} from '../../../app/outline';
-import {useElement} from '../../../app/element';
 import {usePositioner} from '../../../app/positioner';
 import {elementId} from '../../components/Debug/constants';
 import {useMoveableData} from './hooks/useMoveableData';
 import {useDrag} from './hooks/useDrag';
 import {useResize} from './hooks/useResize';
+import {gridViewModel} from '../../../app/grid';
+import {elementViewModel} from '../../../app/element';
+import {observer} from 'mobx-react';
 
 const EDGE_COLUMNS_COUNT = 2;
 // let uxTranslateX = 0;
@@ -26,7 +27,7 @@ const sharedState = {
     isIntoEdgeZone: false,
 };
 
-export const Square = ({
+export const Square = observer(({
     gridArea,
     rowStart,
     columnStart,
@@ -38,12 +39,10 @@ export const Square = ({
     
     const moveableData = useMoveableData(moveableRef);
 
-    const gridData = useGrid();
     const outlineData = useOutline();
-    const elementData = useElement();
     const positionerData = usePositioner();
 
-    const squareState = elementData.state.get(elementId);
+    const squareState = elementViewModel.getElementById(elementId);
     const outlineState = outlineData.state.get(elementId);
 
     if (!outlineState || !squareState) {
@@ -56,25 +55,21 @@ export const Square = ({
 
     const dragData = useDrag({
         moveableData,
-        gridData,
         outlineData,
-        elementData,
         positionerData,
         sharedState,
     });
 
     const resizeData = useResize({
         moveableData,
-        gridData,
         outlineData,
-        elementData,
         positionerData,
         sharedState,
     });
 
     const width = useMemo(() => {
-        return elementData.queries.getElementWidth(outlineColumnStart, outlineColumnEnd);
-    }, [outlineColumnStart, outlineColumnEnd, elementData.queries]);
+        return elementViewModel.getElementWidth(outlineColumnStart, outlineColumnEnd);
+    }, [outlineColumnStart, outlineColumnEnd]);
     
     const bounds = useMemo(() => {
         return {
@@ -101,7 +96,7 @@ export const Square = ({
             <SquareContainer
                 outlineColumnStart={outlineColumnStart}
                 outlineColumnEnd={outlineColumnEnd}
-                lastColumnNumber={gridData.columns + EDGE_COLUMNS_COUNT}
+                lastColumnNumber={gridViewModel.columns + EDGE_COLUMNS_COUNT}
                 gridArea={gridArea}
                 rowStart={rowStart}
                 columnStart={columnStart}
@@ -113,4 +108,4 @@ export const Square = ({
             />
         </BaseBlock>
     );
-};
+});

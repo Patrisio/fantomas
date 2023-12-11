@@ -1,17 +1,27 @@
-import { Grid, useGrid } from "../../../app/grid";
+import {Grid} from "../../../app/grid";
 import { BaseSectionContainer } from "./styles";
+import {observer} from 'mobx-react';
+import {gridViewModel} from '../../../app/grid/GridViewModel';
 
-export const BaseSection = ({children, id}) => {
-    const {rows, columns, columnGap, rowGap, cellWidth, gridHeight, gridTotalCells} = useGrid();
-
+export const BaseSection = observer(({children, id}) => {
     return (
         <BaseSectionContainer
-            height={gridHeight}
-            rows={rows} columns={columns} rowGap={rowGap} columnGap={columnGap}
+            height={gridViewModel.gridHeight}
+            rows={gridViewModel.rows}
+            columns={gridViewModel.columns}
+            rowGap={gridViewModel.rowGap}
+            columnGap={gridViewModel.columnGap}
             id={id}
         >
-            <Grid rows={rows} columns={columns} cells={gridTotalCells} rowGap={rowGap} columnGap={columnGap} cellWidth={cellWidth} />
+            <Grid
+                rows={gridViewModel.rows}
+                columns={gridViewModel.columns}
+                cells={gridViewModel.gridTotalCells}
+                rowGap={gridViewModel.rowGap}
+                columnGap={gridViewModel.columnGap}
+                cellWidth={gridViewModel.cellWidth}
+            />
             {children}
         </BaseSectionContainer>
     );
-};
+});

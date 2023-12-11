@@ -1,12 +1,12 @@
 import {elementId} from '../../../components/Debug/constants';
 import {useCallback, useMemo} from 'react';
 import {DIRECTION_NAME, DIRECTION} from '../../baseBlock/constants';
+import {gridViewModel} from '../../../../app/grid';
+import {elementViewModel} from '../../../../app/element';
 
 export const useResize = ({
     moveableData,
-    gridData,
     outlineData,
-    elementData,
     positionerData,
     sharedState,
 }) => {
@@ -14,15 +14,10 @@ export const useResize = ({
         forceUpdateControlBox,
     } = moveableData;
 
-    const {cellWidth, columnGap, rowGap, gridCellHeight, rows, setRows, maxRowsCount, setMaxRowsCount, restEdgePartWidth} = gridData;
     const {
         state: outlineMapState,
         methods: outlineMethods,
     } = outlineData;
-    const {
-        methods: elementMethods,
-        queries: elementQueries,
-    } = elementData;
 
     const {
         methods: positionerMethods,
@@ -34,8 +29,8 @@ export const useResize = ({
         rowStart: outlineRowStart, rowEnd: outlineRowEnd, columnStart: outlineColumnStart, columnEnd: outlineColumnEnd
     }} = outlineState;
 
-    const outlineWidth = elementQueries.getElementWidth(outlineState.position.columnStart, outlineState.position.columnEnd);
-    const outlineHeight = elementQueries.getElementHeight(outlineState.position.rowStart, outlineState.position.rowEnd);
+    const outlineWidth = elementViewModel.getElementWidth(outlineState.position.columnStart, outlineState.position.columnEnd);
+    const outlineHeight = elementViewModel.getElementHeight(outlineState.position.rowStart, outlineState.position.rowEnd);
 
     const handleDirectionForResize = useCallback((direction: [number, number], options) => {
         const {
@@ -54,7 +49,7 @@ export const useResize = ({
         function handleLeft() {
             const isPullToTheLeftInLeftEdgeZone = isIntoEdgeZone && isIntoLeftEdgeZone;
             if (isPullToTheLeftInLeftEdgeZone) {
-                halfWidthDistance = restEdgePartWidth / 2;
+                halfWidthDistance = gridViewModel.restEdgePartWidth / 2;
             }
 
             const isPullToTheLeftInRightEdgeZone = isIntoEdgeZone && isIntoRightEdgeZone;
@@ -79,7 +74,7 @@ export const useResize = ({
 
             const isPullToTheRightInRightEdgeZone = isIntoEdgeZone && isIntoRightEdgeZone;
             if (isPullToTheRightInRightEdgeZone) {
-                halfWidthDistance = restEdgePartWidth / 2;
+                halfWidthDistance = gridViewModel.restEdgePartWidth / 2;
             }
 
             if (widthDiff > halfWidthDistance) {
@@ -95,20 +90,16 @@ export const useResize = ({
             if (heightDiff > halfHeightDistance) {
                 outlineMethods.updateRowEnd(elementId, outlineRowEnd + 1);
 
-                if (outlineRowEnd > rows) {
-                    setRows((prev) => {
-                        return prev + 1;
-                    });
+                if (outlineRowEnd > gridViewModel.rows) {
+                    gridViewModel.incrementRow();
                 }
             }
     
             if (heightDiff < -halfHeightDistance) {
                 outlineMethods.updateRowEnd(elementId, outlineRowEnd - 1);
 
-                if (outlineRowEnd - 1 === rows && rows > maxRowsCount) {
-                    setRows((prev) => {
-                        return prev - 1;
-                    });
+                if (outlineRowEnd - 1 === gridViewModel.rows && gridViewModel.rows > gridViewModel.maxRowsCount) {
+                    gridViewModel.decrementRow();
                 }
             }
         }
@@ -153,28 +144,29 @@ export const useResize = ({
                 handleLeft();
                 break;
         }
-    }, [outlineColumnEnd, outlineColumnStart, outlineMethods, outlineRowEnd, outlineRowStart, maxRowsCount, rows, restEdgePartWidth, setRows]);
+    }, [outlineColumnEnd, outlineColumnStart, outlineMethods, outlineRowEnd, outlineRowStart, gridViewModel.maxRowsCount, gridViewModel.rows, gridViewModel.restEdgePartWidth]);
 
     const onResizeStartHandler = useCallback((e) => {
-        elementMethods.setMinOffsetWidthAndHeight(e);
+        elementViewModel.setMinOffsetWidthAndHeight(e);
         outlineMethods.showOutline(elementId);
-    }, [outlineMethods, elementMethods]);
+    }, [outlineMethods]);
 
     const onResizeEndHandler = useCallback((e) => {
         outlineMethods.hideOutline(elementId);
 
-        const elementWidth = elementQueries.getElementWidth(outlineColumnStart, outlineColumnEnd);
-        const elementHeight = elementQueries.getElementHeight(outlineRowStart, outlineRowEnd);
+        const elementWidth = elementViewModel.getElementWidth(outlineColumnStart, outlineColumnEnd);
+        const elementHeight = elementViewModel.getElementHeight(outlineRowStart, outlineRowEnd);
 
-        elementMethods.updateElementWidth(elementId, elementWidth);
-        elementMethods.updateElementHeight(elementId, elementHeight);
+        // TODO: проверить, почему это будет работать даже без вызова метода (экшена)
+        elementViewModel.updateElementWidth(elementId, elementWidth);
+        elementViewModel.updateElementHeight(elementId, elementHeight);
 
         positionerMethods.updateColumnStart(elementId, outlineColumnStart);
         positionerMethods.updateColumnEnd(elementId, outlineColumnEnd);
         positionerMethods.updateRowStart(elementId, outlineRowStart);
         positionerMethods.updateRowEnd(elementId, outlineRowEnd);
 
-        setMaxRowsCount(rows);
+        gridViewModel.setMaxRowsCount(gridViewModel.rows);
 
         e.target.style.width = '';
         e.target.style.height = '';
@@ -182,22 +174,22 @@ export const useResize = ({
 
         forceUpdateControlBox(e);
     }, [
-        outlineMethods, elementMethods, elementQueries, positionerMethods, outlineColumnStart,
-        outlineColumnEnd, outlineRowStart, outlineRowEnd, setMaxRowsCount, rows, forceUpdateControlBox,
+        outlineMethods, positionerMethods, outlineColumnStart,
+        outlineColumnEnd, outlineRowStart, outlineRowEnd, gridViewModel.rows, forceUpdateControlBox,
     ]);
 
     const onResizeHandler = useCallback((e) => {
         const leftDistanceFromLeftEdge = e.target.getBoundingClientRect().left ?? 0
         const rightDistanceFromRightEdge = document.documentElement.clientWidth - (e.target.getBoundingClientRect().right ?? 0);
-        const isIntoLeftEdgeZone = leftDistanceFromLeftEdge < restEdgePartWidth;
-        const isIntoRightEdgeZone = rightDistanceFromRightEdge < restEdgePartWidth;
+        const isIntoLeftEdgeZone = leftDistanceFromLeftEdge < gridViewModel.restEdgePartWidth;
+        const isIntoRightEdgeZone = rightDistanceFromRightEdge < gridViewModel.restEdgePartWidth;
 
         sharedState.isIntoEdgeZone = isIntoLeftEdgeZone || isIntoRightEdgeZone;
 
-        const widthDistance = columnGap + cellWidth;
+        const widthDistance = gridViewModel.columnGap + gridViewModel.cellWidth;
         const widthDiff = e.offsetWidth - outlineWidth;
 
-        const heightDistance = rowGap + gridCellHeight;
+        const heightDistance = gridViewModel.rowGap + gridViewModel.gridCellHeight;
         const heightDiff = e.offsetHeight - outlineHeight;
         const halfHeightDistance = heightDistance / 2;
 
@@ -213,7 +205,7 @@ export const useResize = ({
         e.target.style.width = `${e.width}px`;
         e.target.style.height = `${e.height}px`;
         e.target.style.transform = e.drag.transform;
-    }, [outlineWidth, handleDirectionForResize, cellWidth, rowGap, columnGap, gridCellHeight, outlineHeight, restEdgePartWidth, sharedState]);
+    }, [outlineWidth, handleDirectionForResize, gridViewModel.cellWidth, gridViewModel.rowGap, gridViewModel.columnGap, gridViewModel.gridCellHeight, outlineHeight, gridViewModel.restEdgePartWidth, sharedState]);
 
     return useMemo(() => ({
         onResizeStart: onResizeStartHandler,

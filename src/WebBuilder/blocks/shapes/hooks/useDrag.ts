@@ -1,11 +1,11 @@
 import {useCallback, useMemo} from 'react';
 import {elementId} from '../../../components/Debug/constants';
+import {gridViewModel} from '../../../../app/grid';
+import {elementViewModel} from '../../../../app/element';
 
 export const useDrag = ({
     moveableData,
-    gridData,
     outlineData,
-    elementData,
     positionerData,
     sharedState,
 }) => {
@@ -14,16 +14,10 @@ export const useDrag = ({
         forceUpdateControlBox,
     } = moveableData;
 
-    const {cellWidth, columnGap, rowGap, gridCellHeight, rows, setRows, maxRowsCount, setMaxRowsCount, restEdgePartWidth, columns, clientWidth} = gridData;
-
     const {
         state: outlineMapState,
         methods: outlineMethods,
     } = outlineData;
-
-    const {
-        queries: elementQueries,
-    } = elementData;
 
     const {
         methods: positionerMethods,
@@ -42,13 +36,11 @@ export const useDrag = ({
             outlineColumnEnd,
             outlineRowStart,
             outlineRowEnd,
-            restEdgePartWidth,
-            columns,
         } = options;
 
         const rightDistanceFromRightEdge = document.documentElement.clientWidth - (e.target.getBoundingClientRect().right ?? 0);
 
-        const heightDistance = rowGap + gridCellHeight;
+        const heightDistance = gridViewModel.rowGap + gridViewModel.gridCellHeight;
         const halfHeightDistance = heightDistance / 2;
 
         const [moveableLeft, moveableTop] = translate;
@@ -98,7 +90,7 @@ export const useDrag = ({
         }
 
         function handleLeftEdge() {
-            const isIntoLeftEdgeZone = leftDistanceFromLeftEdge < restEdgePartWidth;
+            const isIntoLeftEdgeZone = leftDistanceFromLeftEdge < gridViewModel.restEdgePartWidth;
             if (!isIntoLeftEdgeZone) {
                 return;
             }
@@ -106,7 +98,7 @@ export const useDrag = ({
             const isRightDirection = moveableLeft > sharedState.previouseMoveableLeft;
             const isLeftDirection = moveableLeft < sharedState.previouseMoveableLeft;
 
-            const halfWidthDistance = restEdgePartWidth / 2;
+            const halfWidthDistance = gridViewModel.restEdgePartWidth / 2;
 
             sharedState.horizontalDiffDistance = moveableLeft < 0 ? sharedState.horizontalDiffDistance : leftDistanceFromLeftEdge;
 
@@ -128,7 +120,7 @@ export const useDrag = ({
         }
 
         function handleRightEdge() {
-            const isIntoRightEdgeZone = rightDistanceFromRightEdge < restEdgePartWidth;
+            const isIntoRightEdgeZone = rightDistanceFromRightEdge < gridViewModel.restEdgePartWidth;
             if (!isIntoRightEdgeZone) {
                 sharedState.fixedTranslateX = 0;
                 return;
@@ -137,7 +129,7 @@ export const useDrag = ({
             const isRightDirection = moveableLeft > sharedState.previouseMoveableLeft;
             const isLeftDirection = moveableLeft < sharedState.previouseMoveableLeft;
 
-            const halfWidthDistance = restEdgePartWidth / 2;
+            const halfWidthDistance = gridViewModel.restEdgePartWidth / 2;
 
             const [x, y] = e.translate;
             sharedState.isHorizontalFixed = true;
@@ -145,20 +137,20 @@ export const useDrag = ({
             const second1 = rightDistanceFromRightEdge < halfWidthDistance;
             const first1 = rightDistanceFromRightEdge > halfWidthDistance;
 
-            if (isRightDirection && outlineColumnEnd === columns + 2 && second1) {
+            if (isRightDirection && outlineColumnEnd === gridViewModel.columns + 2 && second1) {
                 outlineMethods.updateColumnEnd(elementId, outlineColumnEnd + 1);
                 outlineMethods.updateColumnStart(elementId, outlineColumnStart + 1);
 
                 forceUpdateControlBox(e, shiftRightSideMoveables);
 
-                sharedState.fixedTranslateX = clientWidth - elementQueries.getElementWidth(outlineColumnStart + 1, 26) - sharedState.initialLeftPosition - restEdgePartWidth;
+                sharedState.fixedTranslateX = gridViewModel.clientWidth - elementViewModel.getElementWidth(outlineColumnStart + 1, 26) - sharedState.initialLeftPosition - gridViewModel.restEdgePartWidth;
             }
 
-            if (isRightDirection && outlineColumnEnd === columns + 3) {
-                sharedState.fixedTranslateX = clientWidth - elementQueries.getElementWidth(outlineColumnStart, 26) - sharedState.initialLeftPosition - restEdgePartWidth;
+            if (isRightDirection && outlineColumnEnd === gridViewModel.columns + 3) {
+                sharedState.fixedTranslateX = gridViewModel.clientWidth - elementViewModel.getElementWidth(outlineColumnStart, 26) - sharedState.initialLeftPosition - gridViewModel.restEdgePartWidth;
             }
 
-            if (isLeftDirection && outlineColumnEnd === columns + 3 && first1) {
+            if (isLeftDirection && outlineColumnEnd === gridViewModel.columns + 3 && first1) {
                 outlineMethods.updateColumnEnd(elementId, outlineColumnEnd - 1);
                 outlineMethods.updateColumnStart(elementId, outlineColumnStart - 1);
 
@@ -171,10 +163,10 @@ export const useDrag = ({
             e.target.style.transform = sharedState.fixedTranslateX && x > sharedState.fixedTranslateX ? `translate(${sharedState.fixedTranslateX}px, ${y}px)` : e.transform;
         }
 
-        const widthDistance = columnGap + cellWidth;
+        const widthDistance = gridViewModel.columnGap + gridViewModel.cellWidth;
         const halfWidthDistance = widthDistance / 2;
 
-        sharedState.isIntoEdgeZone = leftDistanceFromLeftEdge < restEdgePartWidth || rightDistanceFromRightEdge < restEdgePartWidth;
+        sharedState.isIntoEdgeZone = leftDistanceFromLeftEdge < gridViewModel.restEdgePartWidth || rightDistanceFromRightEdge < gridViewModel.restEdgePartWidth;
 
         function handleRight() {
             const isRightDirection = moveableLeft > sharedState.previouseMoveableLeft;
@@ -182,13 +174,13 @@ export const useDrag = ({
                 return;
             }
 
-            if (left < 0 && -left < halfWidthDistance && sharedState.isHorizontalFixed && outlineColumnEnd < columns + 2) {
+            if (left < 0 && -left < halfWidthDistance && sharedState.isHorizontalFixed && outlineColumnEnd < gridViewModel.columns + 2) {
                 sharedState.isHorizontalFixed = false;
                 outlineMethods.updateColumnEnd(elementId, outlineColumnEnd + 1);
                 outlineMethods.updateColumnStart(elementId, outlineColumnStart + 1);
             }
 
-            if (left > halfWidthDistance && !sharedState.isHorizontalFixed && outlineColumnEnd < columns + 2) {
+            if (left > halfWidthDistance && !sharedState.isHorizontalFixed && outlineColumnEnd < gridViewModel.columns + 2) {
                 sharedState.isHorizontalFixed = true;
                 outlineMethods.updateColumnEnd(elementId, outlineColumnEnd + 1);
                 outlineMethods.updateColumnStart(elementId, outlineColumnStart + 1);
@@ -239,10 +231,8 @@ export const useDrag = ({
                 outlineMethods.updateRowEnd(elementId, outlineRowEnd - 1);
                 outlineMethods.updateRowStart(elementId, outlineRowStart - 1);
 
-                if (outlineRowEnd - 1 === rows && rows > maxRowsCount) {
-                    setRows((prev) => {
-                        return prev - 1;
-                    });
+                if (outlineRowEnd - 1 === gridViewModel.rows && gridViewModel.rows > gridViewModel.maxRowsCount) {
+                    gridViewModel.decrementRow();
                 }
             }
 
@@ -251,10 +241,8 @@ export const useDrag = ({
                 outlineMethods.updateRowEnd(elementId, outlineRowEnd - 1);
                 outlineMethods.updateRowStart(elementId, outlineRowStart - 1);
 
-                if (outlineRowEnd - 1 === rows && rows > maxRowsCount) {
-                    setRows((prev) => {
-                        return prev - 1;
-                    });
+                if (outlineRowEnd - 1 === gridViewModel.rows && gridViewModel.rows > gridViewModel.maxRowsCount) {
+                    gridViewModel.decrementRow();
                 }
             }
 
@@ -278,10 +266,8 @@ export const useDrag = ({
                 outlineMethods.updateRowEnd(elementId, outlineRowEnd + 1);
                 outlineMethods.updateRowStart(elementId, outlineRowStart + 1);
 
-                if (outlineRowEnd > rows) {
-                    setRows((prev) => {
-                        return prev + 1;
-                    });
+                if (outlineRowEnd > gridViewModel.rows) {
+                    gridViewModel.incrementRow();
                 }
             }
 
@@ -290,10 +276,8 @@ export const useDrag = ({
                 outlineMethods.updateRowEnd(elementId, outlineRowEnd + 1);
                 outlineMethods.updateRowStart(elementId, outlineRowStart + 1);
 
-                if (outlineRowEnd > rows) {
-                    setRows((prev) => {
-                        return prev + 1;
-                    });
+                if (outlineRowEnd > gridViewModel.rows) {
+                    gridViewModel.incrementRow();
                 }
             }
 
@@ -320,7 +304,7 @@ export const useDrag = ({
 
         sharedState.previouseMoveableLeft = moveableLeft;
         sharedState.previouseMoveableTop = moveableTop;
-    }, [outlineMethods, rows, maxRowsCount, setRows, elementQueries, cellWidth, columnGap, gridCellHeight, rowGap, clientWidth, controlBox, forceUpdateControlBox, sharedState]);
+    }, [outlineMethods, gridViewModel.rows, gridViewModel.maxRowsCount, gridViewModel.cellWidth, gridViewModel.columnGap, gridViewModel.gridCellHeight, gridViewModel.rowGap, gridViewModel.clientWidth, controlBox, forceUpdateControlBox, sharedState]);
 
     const onDragStartHandler = useCallback((e) => {
         sharedState.initialLeftPosition = e.target.getBoundingClientRect().left;
@@ -346,12 +330,12 @@ export const useDrag = ({
         positionerMethods.updateRowStart(elementId, outlineRowStart);
         positionerMethods.updateRowEnd(elementId, outlineRowEnd);
 
-        setMaxRowsCount(rows);
+        gridViewModel.maxRowsCount = gridViewModel.rows;
 
         e.target.style.transform = 'none';
 
         forceUpdateControlBox(e);
-    }, [positionerMethods, outlineColumnStart, outlineColumnEnd, outlineRowStart, outlineRowEnd, outlineMethods, setMaxRowsCount, rows, forceUpdateControlBox, sharedState]);
+    }, [positionerMethods, outlineColumnStart, outlineColumnEnd, outlineRowStart, outlineRowEnd, outlineMethods, gridViewModel.rows, forceUpdateControlBox, sharedState]);
 
     const onDragHandler = useCallback((e) => {
         handleDirectionForDrag(e, {
@@ -359,10 +343,10 @@ export const useDrag = ({
             outlineColumnEnd,
             outlineRowStart,
             outlineRowEnd,
-            restEdgePartWidth,
-            columns,
+            restEdgePartWidth: gridViewModel.restEdgePartWidth,
+            columns: gridViewModel.columns,
         });
-    }, [outlineColumnStart, outlineColumnEnd, outlineRowStart, outlineRowEnd, handleDirectionForDrag, restEdgePartWidth, columns]);
+    }, [outlineColumnStart, outlineColumnEnd, outlineRowStart, outlineRowEnd, handleDirectionForDrag, gridViewModel.restEdgePartWidth, gridViewModel.columns]);
 
     return useMemo(() => ({
         onDragStart: onDragStartHandler,
