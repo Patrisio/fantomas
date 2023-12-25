@@ -1,57 +1,61 @@
-import { usePositioner } from "../../../app/positioner";
-import { useOutline } from "../../../app/outline";
-import {initialShapeData} from "../../../app/positioner/constants";
-import {elementId} from './constants';
-import {gridViewModel} from '../../../app/grid';
-import {elementViewModel} from '../../../app/element';
+import {initialShapeData} from '../../../app/element/positioner/constants';
+import {v4 as uuid} from 'uuid';
+import {ShapeType} from '../../../app/element/positioner';
+import {page} from '../../../app/page';
+import {useState} from 'react';
 
 export const Debug = () => {
-    const {
-        state: positionerState,
-        methods: positionerMethods,
-    } = usePositioner();
-    const {
-        state: outlineState,
-        methods: outlineMethods,
-    } = useOutline();
-    
+    const [section, setSection] = useState(null);
+
     const onChangeRowsHandler = (e) => {
         const value = e.target.value ?? 1;
-        gridViewModel.rows = parseInt(value);
+        section.gridVM.rows = parseInt(value);
     };
 
     const onChangeColumnsHandler = (e) => {
         const value = e.target.value ?? 0;
-        gridViewModel.columns = parseInt(value)
-        gridViewModel.columns = parseInt(value);
+        section.gridVM.columns = parseInt(value)
+        section.gridVM.columns = parseInt(value);
     };
 
     const onChangeRowGapHandler = (e) => {
         const value = e.target.value ?? 0;
-        gridViewModel.rowGap = parseInt(value);
+        section.gridVM.rowGap = parseInt(value);
     };
 
     const onChangeColumnGapHandler = (e) => {
         const value = e.target.value ?? 0;
-        gridViewModel.columnGap = parseInt(value);
+        section.gridVM.columnGap = parseInt(value);
     };
 
-    const squareWidth = elementViewModel.getElementWidth(initialShapeData.position.columnStart, initialShapeData.position.columnEnd);
-    const squareHeight = elementViewModel.getElementHeight(initialShapeData.position.rowStart, initialShapeData.position.rowEnd);
+    const squareWidth = section?.gridVM.getElementWidth(initialShapeData.position.columnStart, initialShapeData.position.columnEnd);
+    const squareHeight = section?.gridVM.getElementHeight(initialShapeData.position.rowStart, initialShapeData.position.rowEnd);
 
     const addShapeHandler = () => {
-        positionerMethods.addShape(elementId);
-        outlineMethods.addOutlineById(elementId, {...initialShapeData.position}, squareWidth, squareHeight);
-        elementViewModel.addElementData(elementId, {width: squareWidth, height: squareHeight});
+        const elementId = uuid();
+        console.log(section.gridVM.cellWidth, section.gridVM.gridCellHeight, '__SUPER__', squareWidth, squareHeight);
+        section.addElement(elementId, {
+            width: squareWidth,
+            height: squareHeight,
+            minWidth: section.gridVM.cellWidth,
+            minHeight: section.gridVM.gridCellHeight,
+            shapeType: ShapeType.SQUARE,
+            initialData: {...initialShapeData.position},
+        });
     };
     
-    const addRowHandler = () => {
-        gridViewModel.rows = gridViewModel.rows + 1;
+    // const addRowHandler = () => {
+    //     gridViewModel.rows = gridViewModel.rows + 1;
+    // };
+
+    const addSectionHandler = () => {
+        const section = page.addSection();
+        setSection(section);
     };
 
     return (
         <div style={{position: 'fixed', bottom: 0}}>
-            <div>columns count: {gridViewModel.columns} : {gridViewModel.gridWidth} : {gridViewModel.cellWidth}</div>
+            <div>columns count: {section?.gridVM.columns} : {section?.gridVM.gridWidth} : {section?.gridVM.cellWidth}</div>
 
             <label>rows</label>
             <input onChange={onChangeRowsHandler} type="number" min={1} />
@@ -65,9 +69,11 @@ export const Debug = () => {
             <label>columnGap</label>
             <input onChange={onChangeColumnGapHandler} type="number" min={1} />
 
-            <button onClick={addRowHandler}>add row</button>
+            {/* <button onClick={addRowHandler}>add row</button> */}
 
             <button onClick={addShapeHandler}>add shape</button>
+
+            <button onClick={addSectionHandler}>add section</button>
         </div>
     );
 };

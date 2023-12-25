@@ -19,7 +19,6 @@ type OutlineMethods = {
     updateColumnEnd: (id: string, columnEnd: number) => void;
     updateRowStart: (id: string, rowStart: number) => void;
     updateRowEnd: (id: string, rowEnd: number) => void;
-    updateOutlineWidth: (id: string, width: number) => void;
     showOutline: (id: string) => void;
     hideOutline: (id: string) => void;
 };

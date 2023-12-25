@@ -1,9 +1,8 @@
-import {Grid} from "../../../app/grid";
-import { BaseSectionContainer } from "./styles";
+import {Grid} from '../../../app/grid';
+import {BaseSectionContainer} from './styles';
 import {observer} from 'mobx-react';
-import {gridViewModel} from '../../../app/grid/GridViewModel';
 
-export const BaseSection = observer(({children, id}) => {
+export const BaseSection = observer(({children, gridViewModel}) => {
     return (
         <BaseSectionContainer
             height={gridViewModel.gridHeight}
@@ -11,15 +10,9 @@ export const BaseSection = observer(({children, id}) => {
             columns={gridViewModel.columns}
             rowGap={gridViewModel.rowGap}
             columnGap={gridViewModel.columnGap}
-            id={id}
         >
             <Grid
-                rows={gridViewModel.rows}
-                columns={gridViewModel.columns}
-                cells={gridViewModel.gridTotalCells}
-                rowGap={gridViewModel.rowGap}
-                columnGap={gridViewModel.columnGap}
-                cellWidth={gridViewModel.cellWidth}
+                gridViewModel={gridViewModel}
             />
             {children}
         </BaseSectionContainer>

@@ -1,20 +1,28 @@
 import {FloatOutline} from '../../components';
 import Moveable from 'react-moveable';
-import {memo, useRef, forwardRef} from 'react';
+import {forwardRef} from 'react';
+import {observer} from 'mobx-react';
 
-export const BaseBlock = forwardRef(({targetRef, moveableProps, isOutlineVisible, outlineGridArea, children}, ref) => {
+export const BaseBlock = observer(forwardRef(({
+    targetRef,
+    moveableProps,
+    elementUnitViewModel,
+    children,
+}, ref) => {
     return (
         <>
             {children}
-            <FloatOutline visible={isOutlineVisible} gridArea={outlineGridArea}/>
+            <FloatOutline
+                elementUnitViewModel={elementUnitViewModel}
+            />
             <Moveable
                 ref={ref}
                 target={targetRef}
-                draggable={true}
+                draggable
                 resizable
                 origin={false}
                 {...moveableProps}
             />
         </>
     );
-});
+}));

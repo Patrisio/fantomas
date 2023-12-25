@@ -1,4 +1,4 @@
-import {ElementType} from '../positioner/types';
+import {ElementType} from './positioner/types';
 
 export type ElementData = {
     width: number;
@@ -7,7 +7,7 @@ export type ElementData = {
     minHeight: number;
 };
 
-export type ElementConfig = Record<ElementType, {minWidth: number, minHeight: number}>;
+export type ElementConfig = Record<ElementType, ElementData>;
 
 type Bounds = {top: boolean, bottom: boolean, left: boolean, right: boolean};
 

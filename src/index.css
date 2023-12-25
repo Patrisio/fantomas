@@ -6,6 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin-bottom: 500px !important;
+  /* background: #2B2C29; */
 }
 
 code {
@@ -18,4 +19,13 @@ code {
   border-radius: initial !important;
   border: 2px solid #027aff !important;
   background: #fff !important;
+  width: 9px !important;
+  height: 9px !important;
+  margin-top: -4.5px !important;
+  margin-left: -4.5px !important;
+}
+
+.moveable-line {
+  height: 3px !important;
+  background: #027aff !important;
 }

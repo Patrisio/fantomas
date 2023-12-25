@@ -17,8 +17,9 @@ export const GridContainer = styled.div<{rows: number, columns: number, rowGap: 
 `;
 
 export const Cell = styled.div`
-    border: ${GRID_CELL_BORDER}px solid blue;
+    border: ${GRID_CELL_BORDER}px solid #B7B7B7;
+    background-color: rgba(255, 255, 255, .2);
     height: ${GRID_CELL_HEIGHT}px;
-    border-radius: 5px;
+    border-radius: 3px;
     box-sizing: border-box;
 `;

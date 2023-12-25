@@ -1,12 +1,14 @@
-import {makeAutoObservable, autorun} from 'mobx';
-import { GRID_CELL_HEIGHT, MAX_WIDTH } from './components/Grid/constants';
+import {makeAutoObservable} from 'mobx';
+import {GRID_CELL_HEIGHT, MAX_WIDTH} from './components/Grid/constants';
 
-class GridViewModel {
+export const EDGE_COLUMNS_COUNT = 2;
+
+export class GridViewModel {
     rows = 10;
     columns = 24;
 
     rowGap = 10;
-    columnGap = 10
+    columnGap = 10;
 
     maxRowsCount = 10;
 
@@ -18,13 +20,12 @@ class GridViewModel {
 
     constructor() {
         makeAutoObservable(this);
-        autorun(() => {
-            const clientWidth = document.documentElement.clientWidth;
-            const restEdgePartWidth = (clientWidth - this.gridWidth) / 2;
 
-            this.restEdgePartWidth = restEdgePartWidth;
-            this.clientWidth = clientWidth;
-        });
+        const clientWidth = document.documentElement.clientWidth;
+        const restEdgePartWidth = (clientWidth - this.gridWidth) / 2;
+
+        this.restEdgePartWidth = restEdgePartWidth;
+        this.clientWidth = clientWidth;
     }
 
     get cellWidth() {
@@ -55,6 +56,22 @@ class GridViewModel {
     setMaxRowsCount(maxRowsCount: number) {
         this.maxRowsCount = maxRowsCount;
     }
-}
 
-export const gridViewModel = new GridViewModel();
+    getElementWidth(columnStart: number, columnEnd: number) {
+        if (columnStart === 1 || columnEnd === this.columns + EDGE_COLUMNS_COUNT + 1) {
+            const usualCellsCount = columnEnd - columnStart - 1;
+            return ((usualCellsCount - 1) * this.columnGap + usualCellsCount * this.cellWidth) + this.restEdgePartWidth;
+        }
+
+        const cellsCount = columnEnd - columnStart;
+
+        return (cellsCount - 1) * this.columnGap + cellsCount * this.cellWidth;
+    }
+
+    getElementHeight(rowStart: number, rowEnd: number) {
+        const cellsCount = rowEnd - rowStart;
+        const totalGridCellHeight = this.gridCellHeight;
+
+        return (cellsCount - 1) * this.columnGap + cellsCount * totalGridCellHeight;
+    }
+}

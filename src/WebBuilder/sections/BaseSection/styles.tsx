@@ -14,7 +14,7 @@ export const BaseSectionContainer = styled.section<{
 
     display: grid;
     ${({rows}) => `grid-template-rows: repeat(${rows}, 1fr)`};
-    ${({columns}) => `grid-template-columns: minmax(10px, 1fr) repeat(${columns}, 50.41px)`} minmax(10px, 1fr);
+    ${({columns}) => `grid-template-columns: minmax(10px, 1fr) repeat(${columns}, 58.15px)`} minmax(10px, 1fr);
     ${({rowGap}) => `grid-row-gap: ${rowGap}px`};
     ${({columnGap}) => `grid-column-gap: ${columnGap}px`};
 `;

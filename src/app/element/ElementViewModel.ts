@@ -1,82 +1,46 @@
-import {gridViewModel} from '../grid';
-import {ElementType} from '../positioner/types';
-import {autorun, makeAutoObservable} from 'mobx';
-import {ElementData, ElementConfig} from './types';
-import {toJS} from 'mobx';
+import {ElementType, ShapeType} from './positioner/types';
+import {makeAutoObservable} from 'mobx';
+import {ElementConfig} from './types';
+import {SharedState} from './SharedState';
+import {PositionerUnitViewModel} from './positioner/PositionerUnitViewModel';
+import {OutlineUnitViewModel} from './outline/OutlineUnitViewModel';
 
-const EDGE_COLUMNS_COUNT = 2;
+export class ElementUnitViewModel {
+    public sharedState = new SharedState();
+    public positionerUnitViewModel: any;
+    public outlineUnitViewModel: any;
+    private elementConfig: ElementConfig;
 
-class ElementViewModel {
-    elements = new Map();
-    elementConfig: ElementConfig = {
-        [ElementType.SHAPE]: {
-            minWidth: 0,
-            minHeight: 0,
-        },
-    };
-
-    constructor() {
+    constructor(
+        private gridViewModel: any,
+        private width: number,
+        private height: number,
+        private minWidth: number,
+        private minHeight: number,
+        private shapeType: ShapeType,
+        private initialData: any,
+    ) {
         makeAutoObservable(this);
-        autorun(() => {
-            const newConfig = {
-                [ElementType.SHAPE]: {
-                    minWidth: gridViewModel.cellWidth,
-                    minHeight: gridViewModel.gridCellHeight,
-                },
-            };
 
-            this.elementConfig = newConfig;
-        });
+        this.elementConfig = {
+            [ElementType.SHAPE]: {
+                minWidth: this.minWidth,
+                minHeight: this.minHeight,
+                width: this.width,
+                height: this.height,
+            },
+        };
+        this.positionerUnitViewModel = new PositionerUnitViewModel(this.shapeType, {...this.initialData});
+        this.outlineUnitViewModel = new OutlineUnitViewModel(
+            {...this.initialData},
+            this.width,
+            this.height,
+            this.gridViewModel,
+        );
     }
-    
-    getElementConfigByShapeType(elementType: ElementType) {
+
+    private getElementConfigByShapeType(elementType: ElementType) {
         return this.elementConfig[elementType];
-    }
-
-    getElementWidth(columnStart: number, columnEnd: number) {
-        if (columnStart === 1 || columnEnd === gridViewModel.columns + EDGE_COLUMNS_COUNT + 1) {
-            const usualCellsCount = columnEnd - columnStart - 1;
-            return ((usualCellsCount - 1) * gridViewModel.columnGap + usualCellsCount * gridViewModel.cellWidth) + gridViewModel.restEdgePartWidth;
-        }
-
-        const cellsCount = columnEnd - columnStart;
-
-        return (cellsCount - 1) * gridViewModel.columnGap + cellsCount * gridViewModel.cellWidth;
-    }
-
-    getElementHeight(rowStart: number, rowEnd: number) {
-        const cellsCount = rowEnd - rowStart;
-        const totalGridCellHeight = gridViewModel.gridCellHeight;
-
-        return (cellsCount - 1) * gridViewModel.columnGap + cellsCount * totalGridCellHeight;
-    }
-
-    addElementData(id: string, elementData: ElementData) {
-        this.elements.set(id, elementData);
-    }
-
-    updateElementWidth(id: string, height: number) {
-        const foundElementData = this.elements.get(id);
-
-        if (!foundElementData) {
-            throw new Error('element не найден');
-        }
-        
-        foundElementData.height = height;
-
-        this.elements.set(id, foundElementData);
-    }
-
-    updateElementHeight(id: string, height: number) {
-        const foundElementData = this.elements.get(id);
-
-        if (!foundElementData) {
-            throw new Error('element не найден');
-        }
-        
-        foundElementData.height = height;
-
-        this.elements.set(id, foundElementData);
     }
 
     setMinOffsetWidthAndHeight(e) {
@@ -84,9 +48,11 @@ class ElementViewModel {
         e.setMin([minWidth, minHeight]);
     }
 
-    getElementById(elementId: string): ElementType {
-        return toJS(this.elements.get(elementId));
+    updateElementWidth(width: number) {
+        this.width = width;
+    }
+
+    updateElementHeight(height: number) {
+        this.height = height;
     }
 }
-
-export const elementViewModel = new ElementViewModel();

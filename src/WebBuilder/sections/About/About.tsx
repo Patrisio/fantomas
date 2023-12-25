@@ -1,42 +1,40 @@
-import {Square} from "../../blocks";
-import {BaseSection} from "../BaseSection";
-import {usePositioner} from '../../../app/positioner';
-import {createPortal} from 'react-dom';
+import {Square} from '../../blocks';
+import {BaseSection} from '../BaseSection';
+import {ShapeType} from '../../../app/element/positioner';
+import {page} from '../../../app/page';
 
-export const About = () => {
-    const {
-        state: elementsMap,
-    } = usePositioner();
+import {observer} from 'mobx-react';
 
-    const elementState = [...elementsMap.values()][0];
-    const baseSectionNode = document.getElementById('baseSection');
+export const About = observer(() => {
+    const sectionList = 
+        page.sectionEntries
+            .map(([sectionId, sectionVM]) => {
+                return (
+                    <BaseSection
+                        gridViewModel={sectionVM.gridVM}
+                        key={sectionId}
+                    >
+                        {
+                            sectionVM.elementEntries
+                                .map(([elementId, elementUnitViewModel]) => {
+                                    const {type} = elementUnitViewModel.positionerUnitViewModel;
 
-    if (!elementState || !baseSectionNode) {
-        return (
-            <BaseSection id={'baseSection'}><></></BaseSection>
-        );
-    }
+                                    if (type === ShapeType.SQUARE) {
+                                        return (
+                                            <Square
+                                                elementUnitViewModel={elementUnitViewModel}
+                                                dragModel={sectionVM.dragModel}
+                                                resizeModel={sectionVM.resizeModel}
+                                                key={elementId}
+                                            />
+                                        );
+                                    }
+                                })
+                        }
+                    </BaseSection>
+                );
+            }
+    )
 
-    const {position: {
-        rowStart,
-        rowEnd,
-        columnStart,
-        columnEnd,
-    }} = elementState;
-
-    return (
-        <>
-            <BaseSection id={'baseSection'} />
-            {createPortal(
-                <Square
-                    gridArea={`${rowStart} / ${columnStart} / ${rowEnd} / ${columnEnd}`}
-                    rowStart={rowStart}
-                    columnStart={columnStart}
-                    rowEnd={rowEnd}
-                    columnEnd={columnEnd}
-                />, 
-                baseSectionNode
-            )}
-        </>
-    );
-};
+    return sectionList;
+});

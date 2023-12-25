@@ -6,6 +6,6 @@ export const FloatOutlineContainer = styled.div<{
 }>`
     ${({visible}) => `display: ${visible ? 'block' : 'none'}`};
     ${({gridArea}) => `grid-area: ${gridArea}`};
-    border: 3px solid red;
+    border: 3px solid #067AFE;
     z-index: 1;
 `;

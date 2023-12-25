@@ -2,7 +2,6 @@ import {useCallback, useMemo} from 'react';
 
 export const useMoveableData = (moveableRef) => {
     const moveable = moveableRef.current?.moveable;
-    console.log(moveableRef.current, 'moveableRef.current');
     const controlBox = moveable?.getControlBoxElement();
 
     const hideControlBox = useCallback(() => {

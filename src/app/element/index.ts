@@ -1,1 +1,1 @@
-export {elementViewModel} from './ElementViewModel';
+export {ElementUnitViewModel} from './ElementViewModel';
