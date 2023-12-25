@@ -1,4 +1,4 @@
-import {FloatOutline} from '../../components';
+import {FloatOutline} from './components/FloatOutline';
 import Moveable from 'react-moveable';
 import {forwardRef} from 'react';
 import {observer} from 'mobx-react';
