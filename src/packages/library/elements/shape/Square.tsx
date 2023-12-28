@@ -1,7 +1,7 @@
 import {useRef, useMemo} from 'react';
 import {observer} from 'mobx-react';
 
-import {Element} from '../../../section/components/element/ui/element';
+import {Element} from '../../../page-editor/section/components/element/ui/element';
 import {SquareContainer} from './styles';
 
 import {useMoveableData} from './hooks/useMoveableData';

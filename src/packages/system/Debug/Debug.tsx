@@ -1,10 +1,9 @@
-import {initialShapeData} from '../../section/components/element/components/positioner/constants';
-import {v4 as uuid} from 'uuid';
-import {ShapeType} from '../../section/components/element/components/positioner';
-import {page} from '../../page';
+import {initialShapeData} from '../../page-editor/section/components/element/components/positioner/constants';
+import {ShapeType} from '../../page-editor/section/components/element/components/positioner';
 import {useState} from 'react';
+import {Converter} from '../../page-editor/Converter';
 
-export const Debug = () => {
+export const Debug = ({page}) => {
     const [section, setSection] = useState(null);
 
     const onChangeRowsHandler = (e) => {
@@ -28,13 +27,12 @@ export const Debug = () => {
         section.gridVM.columnGap = parseInt(value);
     };
 
-    const squareWidth = section?.gridVM.getElementWidth(initialShapeData.position.columnStart, initialShapeData.position.columnEnd);
-    const squareHeight = section?.gridVM.getElementHeight(initialShapeData.position.rowStart, initialShapeData.position.rowEnd);
 
     const addShapeHandler = () => {
-        const elementId = uuid();
+        const squareWidth = section?.gridVM.getElementWidth(initialShapeData.position.columnStart, initialShapeData.position.columnEnd);
+        const squareHeight = section?.gridVM.getElementHeight(initialShapeData.position.rowStart, initialShapeData.position.rowEnd);
         console.log(section.gridVM.cellWidth, section.gridVM.gridCellHeight, '__SUPER__', squareWidth, squareHeight);
-        section.addElement(elementId, {
+        section.addElement({
             width: squareWidth,
             height: squareHeight,
             minWidth: section.gridVM.cellWidth,
@@ -43,7 +41,7 @@ export const Debug = () => {
             initialData: {...initialShapeData.position},
         });
     };
-    
+
     // const addRowHandler = () => {
     //     gridViewModel.rows = gridViewModel.rows + 1;
     // };
@@ -52,6 +50,18 @@ export const Debug = () => {
         const section = page.addSection();
         setSection(section);
     };
+
+    const getConfigHandler = () => {
+        const pageConfig = page.getPageConfig();
+        console.log(pageConfig, '__pageConfig__');
+        const pageResult = new Converter(pageConfig).getPage();
+        console.log(pageResult, '__PAGE__');
+        localStorage.setItem('pageConfigExample', JSON.stringify(pageConfig));
+    };
+
+    // const renderPageHandler = () => {
+    //     const pageConfig =localStorage.getItem('pageConfigExample');
+    // };
 
     return (
         <div style={{position: 'fixed', bottom: 0}}>
@@ -72,8 +82,9 @@ export const Debug = () => {
             {/* <button onClick={addRowHandler}>add row</button> */}
 
             <button onClick={addShapeHandler}>add shape</button>
-
             <button onClick={addSectionHandler}>add section</button>
+            <button onClick={getConfigHandler}>get config</button>
+            {/* <button onClick={renderPageHandler}>render page, using config from LS</button> */}
         </div>
     );
 };
