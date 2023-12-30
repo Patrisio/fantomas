@@ -1,25 +1,35 @@
 import {Grid} from '../../components/grid';
 import {SectionContainer} from './styles';
 import {observer} from 'mobx-react';
-import {Square} from '../../../../library/elements/shape';
-import {ShapeType} from '../../components/element/components/positioner';
+import {Shape, Button} from '../../../library/elements';
 
 export const Section = observer(({vm}) => {
     return (
         <SectionContainer
-            gridVM={vm.gridViewModel}
+            gridVM={vm.gridVM}
         >
             <Grid
-                vm={vm.gridViewModel}
+                vm={vm.gridVM}
             />
             {
                 vm.elementList
                     .map((elementVM) => {
-                        const {type} = elementVM.positionerUnitViewModel;
+                        const {type} = elementVM;
 
-                        if (type === ShapeType.SQUARE) {
+                        if (type === 'SHAPE') {
                             return (
-                                <Square
+                                <Shape
+                                    elementUnitViewModel={elementVM}
+                                    dragModel={vm.dragModel}
+                                    resizeModel={vm.resizeModel}
+                                    key={elementVM.id}
+                                />
+                            );
+                        }
+
+                        if (type === 'BUTTON') {
+                            return (
+                                <Button
                                     elementUnitViewModel={elementVM}
                                     dragModel={vm.dragModel}
                                     resizeModel={vm.resizeModel}

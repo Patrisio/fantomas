@@ -5,7 +5,7 @@ import {PositionerUnitViewModel} from '../components/positioner/PositionerUnitVi
 import {OutlineUnitViewModel} from '../components/outline/OutlineUnitViewModel';
 import {ElementType, ShapeType} from '../components/positioner/types';
 
-import {makeAutoObservable, toJS} from 'mobx';
+import {makeObservable, toJS, action} from 'mobx';
 import {v4 as uuid} from 'uuid';
 
 export class Element {
@@ -21,10 +21,13 @@ export class Element {
         private height: number,
         private minWidth: number,
         private minHeight: number,
-        private shapeType: ShapeType,
-        private initialData: any,
+        private position: any,
+        private type: string,
     ) {
-        makeAutoObservable(this);
+        makeObservable(this, {
+            updateElementWidth: action.bound,
+            updateElementHeight: action.bound,
+        });
 
         this.elementConfig = {
             [ElementType.SHAPE]: {
@@ -34,9 +37,9 @@ export class Element {
                 height: this.height,
             },
         };
-        this.positionerUnitViewModel = new PositionerUnitViewModel(this.shapeType, {...this.initialData});
+        this.positionerUnitViewModel = new PositionerUnitViewModel({...this.position});
         this.outlineUnitViewModel = new OutlineUnitViewModel(
-            {...this.initialData},
+            {...this.position},
             this.width,
             this.height,
             this.gridViewModel,
@@ -47,16 +50,15 @@ export class Element {
         return this.elementConfig[elementType];
     }
 
-    getConfig() {
+    protected getConfig() {
         return {
             id: this.id,
             width: this.width,
             height: this.height,
             minWidth: this.minWidth,
             minHeight: this.minHeight,
-            shapeType: this.shapeType,
-            initialData: toJS(this.positionerUnitViewModel.position),
             position: toJS(this.positionerUnitViewModel.position),
+            type: this.type,
         };
     }
 

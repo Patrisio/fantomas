@@ -3,7 +3,6 @@ import {ShapeType} from './types';
 
 export class PositionerUnitViewModel {
     constructor(
-        private type: ShapeType,
         private position: any,
     ) {
         makeAutoObservable(this);

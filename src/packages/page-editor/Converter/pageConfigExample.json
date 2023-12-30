@@ -1,25 +1,44 @@
 [
     {
+      "elements": [],
+      "grid": {
+        "rows": 10,
+        "columns": 24,
+        "rowGap": 10,
+        "columnGap": 10,
+        "maxRowsCount": 10,
+        "gridCellHeight": 36
+      }
+    },
+    {
       "elements": [
         {
-          "id": "c8396358-f391-421f-9e61-d115c353e4fb",
-          "width": 126.25,
+          "id": "1afc726e-18bf-4ad5-8812-a28afafe5e07",
+          "width": 256.0416666666667,
+          "height": 82,
+          "minWidth": 43.208333333333336,
+          "minHeight": 36,
+          "position": {
+            "rowStart": 1,
+            "rowEnd": 3,
+            "columnStart": 2,
+            "columnEnd": 7
+          },
+          "type": "BUTTON"
+        },
+        {
+          "id": "bed8fd04-d433-4da1-9a37-b19a0131b666",
+          "width": 202.83333333333334,
           "height": 174,
-          "minWidth": 58.125,
+          "minWidth": 43.208333333333336,
           "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 3,
-            "rowEnd": 7,
-            "columnStart": 4,
+          "position": {
+            "rowStart": 1,
+            "rowEnd": 5,
+            "columnStart": 2,
             "columnEnd": 6
           },
-          "position": {
-            "rowStart": 3,
-            "rowEnd": 7,
-            "columnStart": 4,
-            "columnEnd": 6
-          }
+          "type": "SHAPE"
         }
       ],
       "grid": {
@@ -34,276 +53,124 @@
     {
       "elements": [
         {
-          "id": "ab202d20-730c-4a84-aab2-4e7dd6657f5a",
-          "width": 330.625,
-          "height": 36,
-          "minWidth": 58.125,
+          "id": "e5e179ce-a73e-4ffc-b976-23b6e15ca062",
+          "width": 256.0416666666667,
+          "height": 82,
+          "minWidth": 43.208333333333336,
           "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 8,
-            "rowEnd": 9,
-            "columnStart": 3,
-            "columnEnd": 8
-          },
           "position": {
-            "rowStart": 8,
-            "rowEnd": 9,
-            "columnStart": 3,
-            "columnEnd": 8
-          }
-        }
-      ],
-      "grid": {
-        "rows": 10,
-        "columns": 24,
-        "rowGap": 10,
-        "columnGap": 10,
-        "maxRowsCount": 10,
-        "gridCellHeight": 36
-      }
-    },
-    {
-      "elements": [
+            "rowStart": 4,
+            "rowEnd": 6,
+            "columnStart": 7,
+            "columnEnd": 12
+          },
+          "type": "BUTTON"
+        },
         {
-          "id": "461edee3-da4c-4f22-8656-bf2349a54d04",
-          "width": 330.625,
+          "id": "22fb81ce-92c5-4d63-ad8d-87f7383473ff",
+          "width": 468.875,
+          "height": 312,
+          "minWidth": 43.208333333333336,
+          "minHeight": 36,
+          "position": {
+            "rowStart": 3,
+            "rowEnd": 10,
+            "columnStart": 1,
+            "columnEnd": 10
+          },
+          "type": "SHAPE"
+        },
+        {
+          "id": "b3b7cef7-8540-41a9-b94a-77ed552e7131",
+          "width": 202.83333333333334,
+          "height": 174,
+          "minWidth": 43.208333333333336,
+          "minHeight": 36,
+          "position": {
+            "rowStart": 4,
+            "rowEnd": 8,
+            "columnStart": 12,
+            "columnEnd": 16
+          },
+          "type": "SHAPE"
+        },
+        {
+          "id": "5ab6fcbb-6ea2-42ee-9f81-7a914ae75c0a",
+          "width": 149.625,
           "height": 266,
-          "minWidth": 58.125,
+          "minWidth": 43.208333333333336,
           "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 2,
-            "rowEnd": 8,
-            "columnStart": 15,
+          "position": {
+            "rowStart": 6,
+            "rowEnd": 12,
+            "columnStart": 17,
             "columnEnd": 20
           },
-          "position": {
-            "rowStart": 2,
-            "rowEnd": 8,
-            "columnStart": 15,
-            "columnEnd": 20
-          }
+          "type": "BUTTON"
         },
         {
-          "id": "5971b0dc-1a43-4944-b65e-33651128716a",
-          "width": 262.5,
-          "height": 128,
-          "minWidth": 58.125,
+          "id": "f949b7b8-4bfa-447f-987f-e07d6d2f5f65",
+          "width": 256.0416666666667,
+          "height": 82,
+          "minWidth": 43.208333333333336,
           "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 4,
-            "rowEnd": 7,
-            "columnStart": 3,
-            "columnEnd": 7
-          },
           "position": {
-            "rowStart": 4,
+            "rowStart": 5,
             "rowEnd": 7,
-            "columnStart": 3,
-            "columnEnd": 7
-          }
+            "columnStart": 18,
+            "columnEnd": 23
+          },
+          "type": "BUTTON"
+        },
+        {
+          "id": "30e5164f-1e2e-4b08-86fb-d4dae410a3a9",
+          "width": 96.41666666666667,
+          "height": 82,
+          "minWidth": 43.208333333333336,
+          "minHeight": 36,
+          "position": {
+            "rowStart": 11,
+            "rowEnd": 13,
+            "columnStart": 9,
+            "columnEnd": 11
+          },
+          "type": "BUTTON"
+        },
+        {
+          "id": "4bc7077b-4576-4790-9273-f6b1cba50aed",
+          "width": 765.2083333333334,
+          "height": 174,
+          "minWidth": 43.208333333333336,
+          "minHeight": 36,
+          "position": {
+            "rowStart": 9,
+            "rowEnd": 13,
+            "columnStart": 13,
+            "columnEnd": 27
+          },
+          "type": "SHAPE"
+        },
+        {
+          "id": "4c967a1b-bed5-4971-b0e9-6f87ef3e794b",
+          "width": 256.0416666666667,
+          "height": 312,
+          "minWidth": 43.208333333333336,
+          "minHeight": 36,
+          "position": {
+            "rowStart": 14,
+            "rowEnd": 21,
+            "columnStart": 4,
+            "columnEnd": 9
+          },
+          "type": "BUTTON"
         }
       ],
       "grid": {
-        "rows": 10,
+        "rows": 21,
         "columns": 24,
         "rowGap": 10,
         "columnGap": 10,
-        "maxRowsCount": 10,
-        "gridCellHeight": 36
-      }
-    },
-    {
-      "elements": [
-        {
-          "id": "f18b396d-692b-43a7-89af-e906d1ba2029",
-          "width": 262.5,
-          "height": 174,
-          "minWidth": 58.125,
-          "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 21,
-            "rowEnd": 25,
-            "columnStart": 19,
-            "columnEnd": 23
-          },
-          "position": {
-            "rowStart": 21,
-            "rowEnd": 25,
-            "columnStart": 19,
-            "columnEnd": 23
-          }
-        },
-        {
-          "id": "90a3eb31-fb7c-47e9-950b-ac5f01087ce8",
-          "width": 262.5,
-          "height": 174,
-          "minWidth": 58.125,
-          "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 13,
-            "rowEnd": 17,
-            "columnStart": 11,
-            "columnEnd": 15
-          },
-          "position": {
-            "rowStart": 13,
-            "rowEnd": 17,
-            "columnStart": 11,
-            "columnEnd": 15
-          }
-        },
-        {
-          "id": "e15f2ff6-83d8-44ac-b59a-fad40e572a36",
-          "width": 262.5,
-          "height": 174,
-          "minWidth": 58.125,
-          "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 16,
-            "rowEnd": 20,
-            "columnStart": 5,
-            "columnEnd": 9
-          },
-          "position": {
-            "rowStart": 16,
-            "rowEnd": 20,
-            "columnStart": 5,
-            "columnEnd": 9
-          }
-        },
-        {
-          "id": "039ca734-68d5-4f78-b307-e6e6117d4b0a",
-          "width": 262.5,
-          "height": 174,
-          "minWidth": 58.125,
-          "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 11,
-            "rowEnd": 15,
-            "columnStart": 14,
-            "columnEnd": 18
-          },
-          "position": {
-            "rowStart": 11,
-            "rowEnd": 15,
-            "columnStart": 14,
-            "columnEnd": 18
-          }
-        },
-        {
-          "id": "cb2001f5-6244-4165-8535-d92ba70ae725",
-          "width": 262.5,
-          "height": 174,
-          "minWidth": 58.125,
-          "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 3,
-            "rowEnd": 7,
-            "columnStart": 1,
-            "columnEnd": 5
-          },
-          "position": {
-            "rowStart": 3,
-            "rowEnd": 7,
-            "columnStart": 1,
-            "columnEnd": 5
-          }
-        },
-        {
-          "id": "7d9b476a-11d2-4479-a8b1-7b15c5cca095",
-          "width": 262.5,
-          "height": 174,
-          "minWidth": 58.125,
-          "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 11,
-            "rowEnd": 15,
-            "columnStart": 1,
-            "columnEnd": 5
-          },
-          "position": {
-            "rowStart": 11,
-            "rowEnd": 15,
-            "columnStart": 1,
-            "columnEnd": 5
-          }
-        },
-        {
-          "id": "a3fadea4-cd45-47ee-9cf9-d03fcc1e4399",
-          "width": 262.5,
-          "height": 174,
-          "minWidth": 58.125,
-          "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 6,
-            "rowEnd": 10,
-            "columnStart": 6,
-            "columnEnd": 10
-          },
-          "position": {
-            "rowStart": 6,
-            "rowEnd": 10,
-            "columnStart": 6,
-            "columnEnd": 10
-          }
-        },
-        {
-          "id": "22811cf7-b1e4-4896-b5d3-6ed62ca2b0fa",
-          "width": 262.5,
-          "height": 174,
-          "minWidth": 58.125,
-          "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 23,
-            "rowEnd": 27,
-            "columnStart": 6,
-            "columnEnd": 10
-          },
-          "position": {
-            "rowStart": 23,
-            "rowEnd": 27,
-            "columnStart": 6,
-            "columnEnd": 10
-          }
-        },
-        {
-          "id": "175bfffb-b329-4a35-9c07-1c56640c6c3a",
-          "width": 262.5,
-          "height": 174,
-          "minWidth": 58.125,
-          "minHeight": 36,
-          "shapeType": "SQUARE",
-          "initialData": {
-            "rowStart": 6,
-            "rowEnd": 10,
-            "columnStart": 23,
-            "columnEnd": 27
-          },
-          "position": {
-            "rowStart": 6,
-            "rowEnd": 10,
-            "columnStart": 23,
-            "columnEnd": 27
-          }
-        }
-      ],
-      "grid": {
-        "rows": 27,
-        "columns": 24,
-        "rowGap": 10,
-        "columnGap": 10,
-        "maxRowsCount": 27,
+        "maxRowsCount": 21,
         "gridCellHeight": 36
       }
     }

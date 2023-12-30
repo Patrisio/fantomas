@@ -1,4 +1,5 @@
 import {SectionVM} from '../section';
+import {GridVM} from '../section/components/grid';
 
 import {makeObservable, action, observable} from 'mobx';
 import {v4 as uuid} from 'uuid';
@@ -15,22 +16,15 @@ export class Page {
         });
     }
 
-    addSection(
-        rows?: number,
-        columns?: number,
-        rowGap?: number,
-        columnGap?: number,
-        maxRowsCount?: number,
-        gridCellHeight?: number,
-    ) {
-        const section = new SectionVM(
-            rows,
-            columns,
-            rowGap,
-            columnGap,
-            maxRowsCount,
-            gridCellHeight
-        );
+    addSection(gridViewModel?: any) {
+        let section;
+
+        if (gridViewModel) {
+            section = new SectionVM(gridViewModel);
+        } else {
+            const gridVM = new GridVM();
+            section = new SectionVM(gridVM);
+        }
 
         this.sectionsMap.set(section.id, section);
         

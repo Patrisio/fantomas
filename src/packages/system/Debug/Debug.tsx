@@ -1,7 +1,7 @@
-import {initialShapeData} from '../../page-editor/section/components/element/components/positioner/constants';
-import {ShapeType} from '../../page-editor/section/components/element/components/positioner';
+import {initialShapeData} from '../../page-editor/element/components/positioner/constants';
 import {useState} from 'react';
 import {Converter} from '../../page-editor/Converter';
+import {ShapeVM, ButtonVM} from '../../page-editor/library/elements';
 
 export const Debug = ({page}) => {
     const [section, setSection] = useState(null);
@@ -29,17 +29,19 @@ export const Debug = ({page}) => {
 
 
     const addShapeHandler = () => {
-        const squareWidth = section?.gridVM.getElementWidth(initialShapeData.position.columnStart, initialShapeData.position.columnEnd);
-        const squareHeight = section?.gridVM.getElementHeight(initialShapeData.position.rowStart, initialShapeData.position.rowEnd);
-        console.log(section.gridVM.cellWidth, section.gridVM.gridCellHeight, '__SUPER__', squareWidth, squareHeight);
-        section.addElement({
-            width: squareWidth,
-            height: squareHeight,
-            minWidth: section.gridVM.cellWidth,
-            minHeight: section.gridVM.gridCellHeight,
-            shapeType: ShapeType.SQUARE,
-            initialData: {...initialShapeData.position},
-        });
+        section.addElement(new ShapeVM(section.gridVM));
+
+        // {
+        //     width: squareWidth,
+        //     height: squareHeight,
+        //     minWidth: section.gridVM.cellWidth,
+        //     minHeight: section.gridVM.gridCellHeight,
+        //     position: {...initialShapeData.position},
+        // }
+    };
+
+    const addButtonHandler = () => {
+        section.addElement(new ButtonVM(section.gridVM));
     };
 
     // const addRowHandler = () => {
@@ -82,6 +84,7 @@ export const Debug = ({page}) => {
             {/* <button onClick={addRowHandler}>add row</button> */}
 
             <button onClick={addShapeHandler}>add shape</button>
+            <button onClick={addButtonHandler}>add button</button>
             <button onClick={addSectionHandler}>add section</button>
             <button onClick={getConfigHandler}>get config</button>
             {/* <button onClick={renderPageHandler}>render page, using config from LS</button> */}

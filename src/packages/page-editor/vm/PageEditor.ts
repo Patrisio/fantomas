@@ -1,5 +1,7 @@
 import {SectionVM} from '../section';
-import {makeAutoObservable, toJS} from 'mobx';
+import {GridVM} from '../section/components/grid';
+
+import {makeAutoObservable} from 'mobx';
 
 export class PageEditor {
     constructor(
@@ -9,7 +11,8 @@ export class PageEditor {
     }
 
     addSection() {
-        const section = new SectionVM();
+        const gridVM = new GridVM();
+        const section = new SectionVM(gridVM);
 
         this.page.getSections().set(section.id, section);
 

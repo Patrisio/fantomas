@@ -1,4 +1,6 @@
 import {Page} from '../entity/Page';
+import {ShapeVM, ButtonVM} from '../library/elements';
+import {GridVM} from '../section/components/grid';
 
 export class Converter {
     private page: any;
@@ -26,7 +28,7 @@ export class Converter {
     }
 
     private createSection(page, gridConfig) {
-        const section = page.addSection(
+        const gridVM = new GridVM(
             gridConfig.rows,
             gridConfig.columns,
             gridConfig.rowGap,
@@ -34,26 +36,59 @@ export class Converter {
             gridConfig.maxRowsCount,
             gridConfig.gridCellHeight,
         );
+        const section = page.addSection(gridVM);
         return section;
     }
 
     private createElement(section, elementConfig) {
         const {
-            initialData,
+            position,
             minWidth,
             minHeight,
-            shapeType,
-            width,
-            height
-        } = elementConfig;
-        section.addElement({
             width,
             height,
-            minWidth,
-            minHeight,
-            shapeType,
-            initialData,
-        });
+            type,
+        } = elementConfig;
+        
+        let element;
+        
+        switch (type) {
+            case 'SHAPE':
+                element = new ShapeVM(
+                    section.gridVM,
+                    width,
+                    height,
+                    minWidth,
+                    minHeight,
+                    position,
+                );
+                break;
+            case 'BUTTON':
+                element = new ButtonVM(
+                    section.gridVM,
+                    width,
+                    height,
+                    minWidth,
+                    minHeight,
+                    position,
+                );
+                break;
+            default:
+                throw new Error('Переданного типа элемента не существует в системе.');
+        }
+
+        section.addElement(element);
+    }
+
+    private getElementByType(type, elementInputData) {
+        switch (type) {
+            case 'SHAPE':
+                return new ShapeVM(...elementInputData);
+            case 'BUTTON':
+                return new ButtonVM(elementInputData);
+            default:
+                throw new Error('Переданного типа элемента не существует в системе.');
+        }
     }
 
     getPage() {

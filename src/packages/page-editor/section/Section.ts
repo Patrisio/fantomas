@@ -1,7 +1,5 @@
 import {DragModel} from './models/DragModel';
 import {ResizeModel} from './models/ResizeModel';
-import {ElementVM} from './components/element';
-import {GridVM} from './components/grid';
 
 import {makeAutoObservable} from 'mobx';
 import {v4 as uuid} from 'uuid';
@@ -9,31 +7,13 @@ import {v4 as uuid} from 'uuid';
 export class Section {
     public id = uuid();
     private elements = new Map();
-    private gridViewModel;
     public dragModel;
     public resizeModel;
 
     constructor(
-        private rows?: number,
-        private columns?: number,
-
-        private rowGap?: number,
-        private columnGap?: number,
-
-        private maxRowsCount?: number,
-
-        private gridCellHeight?: number,
+        private gridViewModel: any,
     ) {
         makeAutoObservable(this);
-
-        this.gridViewModel = new GridVM(
-            this.rows,
-            this.columns,
-            this.rowGap,
-            this.columnGap,
-            this.maxRowsCount,
-            this.gridCellHeight,
-        );
 
         this.dragModel = new DragModel(
             this.gridViewModel,
@@ -44,22 +24,24 @@ export class Section {
         );
     }
 
-    addElement(elementData: ElementData) {
-        const elementUnitViewModel = new ElementVM(
-            this.gridViewModel,
-            elementData.width,
-            elementData.height,
-            elementData.minWidth,
-            elementData.minHeight,
-            elementData.shapeType,
-            elementData.initialData,
-        );
+    addElement(elementUnitViewModel: any) {
+        console.log(elementUnitViewModel, '__elementUnitViewModel__');
+        // const elementUnitViewModel = new ElementVM(
+        //     this.gridViewModel,
+        //     elementData.width,
+        //     elementData.height,
+        //     elementData.minWidth,
+        //     elementData.minHeight,
+        //     elementData.position,
+        // );
         this.elements.set(elementUnitViewModel.id, elementUnitViewModel);
     }
 
     getConfig() {
         const elements = [];
+        console.log(this.elements, '__this.elements_____');
         this.elements.forEach((elementVM) => {
+            console.log(elementVM, '__CCCCC__');
             const elementConfig = elementVM.getConfig();
             elements.push(elementConfig);
         });

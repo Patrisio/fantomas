@@ -1,20 +1,17 @@
-import {useRef, useMemo} from 'react';
-import {observer} from 'mobx-react';
-
-import {Element} from '../../../page-editor/section/components/element/ui/element';
-import {SquareContainer} from './styles';
-
+import {FloatOutline} from './components/FloatOutline';
 import {useMoveableData} from './hooks/useMoveableData';
 
-// let uxTranslateX = 0;
+import Moveable from 'react-moveable';
+import {useMemo, useRef} from 'react';
+import {observer} from 'mobx-react';
 
-export const Square = observer(({
+export const Element = observer(({
+    targetRef,
     elementUnitViewModel,
     dragModel,
     resizeModel,
+    children,
 }) => {
-    const targetRef = useRef<HTMLDivElement>(null);
-
     const moveableRef = useRef(null);
     const moveableData = useMoveableData(moveableRef);
 
@@ -39,18 +36,19 @@ export const Square = observer(({
     }), [moveableData, bounds]);
 
     return (
-        <Element
-            targetRef={targetRef}
-            ref={moveableRef}
-            moveableProps={moveableProps}
-            elementUnitViewModel={elementUnitViewModel}
-        >
-            <SquareContainer
-                gridArea={elementUnitViewModel.positionerUnitViewModel.gridArea}
-                width={elementUnitViewModel.width}
-                height={elementUnitViewModel.height}
-                ref={targetRef}
+        <>
+            {children}
+            <FloatOutline
+                elementUnitViewModel={elementUnitViewModel}
             />
-        </Element>
+            <Moveable
+                ref={moveableRef}
+                target={targetRef}
+                draggable
+                resizable
+                origin={false}
+                {...moveableProps}
+            />
+        </>
     );
 });

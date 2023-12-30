@@ -1,4 +1,4 @@
-import {DIRECTION_NAME, DIRECTION} from '../components/element/ui/element/constants';
+import {DIRECTION_NAME, DIRECTION} from '../../element/ui/element/constants';
 
 export class ResizeModel {
     constructor(

@@ -1,5 +1,4 @@
 import {Page} from '../../entity/Page';
-import {ShapeType} from '../../section/components/element/components/positioner/types';
 
 export class SimplePage extends Page {
     constructor() {
@@ -22,8 +21,7 @@ export class SimplePage extends Page {
             height: section?.gridVM.getElementHeight(initialPosition.rowStart, initialPosition.rowEnd),
             minWidth: section.gridVM.cellWidth,
             minHeight: section.gridVM.gridCellHeight,
-            shapeType: ShapeType.SQUARE,
-            initialData: {
+            position: {
                 rowStart: initialPosition.rowStart,
                 rowEnd: initialPosition.rowEnd,
                 columnStart: initialPosition.columnStart,
@@ -45,8 +43,7 @@ export class SimplePage extends Page {
             height: section?.gridVM.getElementHeight(initialPosition.rowStart, initialPosition.rowEnd),
             minWidth: section.gridVM.cellWidth,
             minHeight: section.gridVM.gridCellHeight,
-            shapeType: ShapeType.SQUARE,
-            initialData: {
+            position: {
                 rowStart: initialPosition.rowStart,
                 rowEnd: initialPosition.rowEnd,
                 columnStart: initialPosition.columnStart,
@@ -69,8 +66,7 @@ export class SimplePage extends Page {
             height: section?.gridVM.getElementHeight(firstElementInitialPosition.rowStart, firstElementInitialPosition.rowEnd),
             minWidth: section.gridVM.cellWidth,
             minHeight: section.gridVM.gridCellHeight,
-            shapeType: ShapeType.SQUARE,
-            initialData: {
+            position: {
                 rowStart: firstElementInitialPosition.rowStart,
                 rowEnd: firstElementInitialPosition.rowEnd,
                 columnStart: firstElementInitialPosition.columnStart,
@@ -89,8 +85,7 @@ export class SimplePage extends Page {
             height: section?.gridVM.getElementHeight(secondElementInitialPosition.rowStart, secondElementInitialPosition.rowEnd),
             minWidth: section.gridVM.cellWidth,
             minHeight: section.gridVM.gridCellHeight,
-            shapeType: ShapeType.SQUARE,
-            initialData: {
+            position: {
                 rowStart: secondElementInitialPosition.rowStart,
                 rowEnd: secondElementInitialPosition.rowEnd,
                 columnStart: secondElementInitialPosition.columnStart,
