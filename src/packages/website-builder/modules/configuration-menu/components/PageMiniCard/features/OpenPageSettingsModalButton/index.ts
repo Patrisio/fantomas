@@ -1,0 +1,1 @@
+export {OpenPageSettingsModalButton} from './OpenPageSettingsModalButton';

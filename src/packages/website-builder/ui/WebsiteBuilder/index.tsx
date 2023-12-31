@@ -1,12 +1,18 @@
-import {ViewportPreviewer} from '../../modules';
-// import {ButtonUI, IconUI} from '../../../diamond-ui';
+import {ViewportPreviewer, ConfigurationMenu} from '../../modules';
 import {ViewportPreviewerWrapper} from './styles';
+import {PageTemplateFactory} from '../../../page-editor';
 
 import {observer} from 'mobx-react';
 import {useState} from 'react';
 
 export const WebsiteBuilder = observer(({vm}) => {
     const [open, setOpen] = useState(true);
+
+    const addEmptyPage = () => {
+        const page = PageTemplateFactory.createBlankPage();
+        vm.addPage(page);
+    };
+
     return (
         <>
             <div style={{
@@ -18,16 +24,11 @@ export const WebsiteBuilder = observer(({vm}) => {
                 >
                     {open ? 'close' : 'open'}
                 </button>
-                <div
-                    className='sidebar'
-                    style={{
-                        width: open ? 342 : 0,
-                        height: 500,
-                        visibility: open ? 'visible' : 'hidden',
-                    }}
-                >
-                    <div style={{width: 1000, height: 500}}></div>
-                </div>
+                <ConfigurationMenu
+                    open={open}
+                    addEmptyPage={addEmptyPage}
+                    pageList={vm.pageList}
+                />
                 <ViewportPreviewerWrapper open={open}>
                     <ViewportPreviewer />
                 </ViewportPreviewerWrapper>

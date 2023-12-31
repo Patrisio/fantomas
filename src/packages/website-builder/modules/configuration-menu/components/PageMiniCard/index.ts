@@ -1,0 +1,1 @@
+export {PageMiniCard} from './PageMiniCard';

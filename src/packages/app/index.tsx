@@ -1,12 +1,16 @@
 import {Debug} from '../system/Debug/Debug';
 import {WebsiteBuilder, WebsiteBuilderVM} from '../website-builder';
 import {PageEditor} from '../page-editor';
+import {standard} from '../diamond-ui/typography';
 
 import {observer} from 'mobx-react';
 import {
     createBrowserRouter,
     RouterProvider,
-  } from 'react-router-dom';
+} from 'react-router-dom';
+import { createGlobalStyle } from 'styled-components';
+
+const TypoStyle = createGlobalStyle(standard);
 
 export const App = observer(() => {
     const websiteBuilderVM = new WebsiteBuilderVM();
@@ -36,6 +40,9 @@ export const App = observer(() => {
     ]);
 
     return (
-        <RouterProvider router={router} />
+        <>
+            <TypoStyle />
+            <RouterProvider router={router} />
+        </>
     );
 });
